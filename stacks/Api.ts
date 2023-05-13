@@ -21,7 +21,11 @@ export function API({ stack }: StackContext) {
     },
     routes: {
       'GET /': 'packages/functions/src/lambda.handler',
-      'GET /search/{cep}': 'packages/functions/src/search.handler'
+      'GET /search/{cep}': 'packages/functions/src/search.handler',
+
+      'POST /keys/create': 'packages/functions/src/keys.createHandler',
+      'GET /keys/list': 'packages/functions/src/keys.listHandler',
+      'DELETE /keys/delete/{id}': 'packages/functions/src/keys.deleteHandler'
     }
   })
 

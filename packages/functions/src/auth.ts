@@ -5,6 +5,7 @@ declare module 'sst/node/auth' {
   export interface SessionTypes {
     user: {
       userID: string
+      role: string
     }
   }
 }
@@ -27,7 +28,8 @@ export const handler = AuthHandler({
             'https://fnuhcvjm9b.execute-api.sa-east-1.amazonaws.com/auth/',
           type: 'user',
           properties: {
-            userID: existingUser?.userID
+            userID: existingUser?.userID,
+            role: existingUser?.role
           }
         })
       }
