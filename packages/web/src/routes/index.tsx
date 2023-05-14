@@ -40,7 +40,7 @@ export default function Home() {
       <Show when={data.loading}>loading...</Show>
       <Show when={data.error}>error: {data.error.message}</Show>
       <Show when={data()}>
-        <pre>{JSON.stringify(data(), null, 2)}</pre>
+        <h1>{data()?.id}</h1>
       </Show>
     </main>
   )

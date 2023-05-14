@@ -6,6 +6,7 @@ import {
   FileRoutes,
   Head,
   Html,
+  Link,
   Meta,
   Routes,
   Scripts,
@@ -20,6 +21,13 @@ export default function Root() {
         <Title>SolidStart - With TailwindCSS</Title>
         <Meta charset="utf-8" />
         <Meta name="viewport" content="width=device-width, initial-scale=1" />
+        <Link rel="icon" href="/favicon.ico" />
+        <Link
+          rel="preload"
+          href="/fonts/Inter-Regular.ttf"
+          as="font"
+          type="font/ttf"
+        />
       </Head>
       <Body class="min-h-screen bg-background font-sans antialiased">
         <Suspense>
