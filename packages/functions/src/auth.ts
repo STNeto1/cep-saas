@@ -1,5 +1,6 @@
 import { User } from '@cep-saas/core/user'
 import { AuthHandler, GoogleAdapter, Session } from 'sst/node/auth'
+import { Config } from 'sst/node/config'
 
 declare module 'sst/node/auth' {
   export interface SessionTypes {
@@ -14,7 +15,7 @@ export const handler = AuthHandler({
   providers: {
     google: GoogleAdapter({
       mode: 'oidc',
-      clientID: process.env.GOOGLE_CLIENT_ID ?? '',
+      clientID: Config.GOOGLE_CLIENT_ID,
       onSuccess: async (tokenSet) => {
         const claims = tokenSet.claims()
 
@@ -24,8 +25,7 @@ export const handler = AuthHandler({
         }
 
         return Session.cookie({
-          redirect:
-            'https://fnuhcvjm9b.execute-api.sa-east-1.amazonaws.com/auth/',
+          redirect: Config.AUTH_REDIRECT_URL,
           type: 'user',
           properties: {
             userID: existingUser?.userID,

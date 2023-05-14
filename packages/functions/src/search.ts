@@ -1,5 +1,5 @@
 import { Cep } from '@cep-saas/core/cep'
-import { Key } from '@cep-saas/core/key'
+import { User } from '@cep-saas/core/user'
 import { Unauthorized } from 'src/generic_responses'
 import { ApiHandler } from 'sst/node/api'
 import { z } from 'zod'
@@ -14,13 +14,7 @@ export const handler = ApiHandler(async (evt) => {
     return Unauthorized
   }
 
-  const key = await Key.fromValue(token)
-  if (!key) {
-    return Unauthorized
-  }
-
-  // TODO log?
-
+  // Validate before querying the authorization?
   const result = paramSchema.safeParse(evt.pathParameters)
   if (!result.success) {
     return {
@@ -32,6 +26,11 @@ export const handler = ApiHandler(async (evt) => {
   }
 
   const dynamoData = await Cep.fromPostalCode(result.data.cep)
+
+  const user = await User.fromApiKey(token)
+  if (!user) {
+    return Unauthorized
+  }
 
   return {
     statusCode: 200,

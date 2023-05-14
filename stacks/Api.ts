@@ -1,8 +1,10 @@
 import { Api, Auth, StackContext, use } from 'sst/constructs'
 import { Database } from './Database'
+import { Secret } from './Secret'
 
 export function API({ stack }: StackContext) {
   const db = use(Database)
+  const { GOOGLE_CLIENT_ID, AUTH_REDIRECT_URL } = use(Secret)
 
   const auth = new Auth(stack, 'auth', {
     authenticator: {
@@ -13,19 +15,14 @@ export function API({ stack }: StackContext) {
   const api = new Api(stack, 'api', {
     defaults: {
       function: {
-        bind: [db],
-        environment: {
-          GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID!
-        }
+        bind: [db, GOOGLE_CLIENT_ID, AUTH_REDIRECT_URL]
       }
     },
     routes: {
-      'GET /': 'packages/functions/src/lambda.handler',
       'GET /search/{cep}': 'packages/functions/src/search.handler',
 
-      'POST /keys/create': 'packages/functions/src/keys.createHandler',
-      'GET /keys/list': 'packages/functions/src/keys.listHandler',
-      'DELETE /keys/delete/{id}': 'packages/functions/src/keys.deleteHandler'
+      'GET /user': 'packages/functions/src/user.profileHandler',
+      'POST /user/refresh': 'packages/functions/src/user.refreshHandler'
     }
   })
 

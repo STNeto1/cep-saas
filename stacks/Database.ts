@@ -8,7 +8,9 @@ export function Database({ stack }: StackContext) {
       gsi1pk: 'string',
       gsi1sk: 'string',
       gsi2pk: 'string',
-      gsi2sk: 'string'
+      gsi2sk: 'string',
+      gsi3pk: 'string',
+      gsi3sk: 'string'
     },
     primaryIndex: {
       partitionKey: 'pk',
@@ -22,6 +24,10 @@ export function Database({ stack }: StackContext) {
       gsi2: {
         partitionKey: 'gsi2pk',
         sortKey: 'gsi2sk'
+      },
+      gsi3: {
+        partitionKey: 'gsi3pk',
+        sortKey: 'gsi3sk'
       }
     }
   })
