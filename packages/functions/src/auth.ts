@@ -24,7 +24,7 @@ export const handler = AuthHandler({
           existingUser = await User.create(claims.email!)
         }
 
-        return Session.cookie({
+        return Session.parameter({
           redirect: Config.AUTH_REDIRECT_URL,
           type: 'user',
           properties: {

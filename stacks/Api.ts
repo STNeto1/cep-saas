@@ -18,6 +18,12 @@ export function API({ stack }: StackContext) {
         bind: [db, GOOGLE_CLIENT_ID, AUTH_REDIRECT_URL]
       }
     },
+    cors: {
+      allowCredentials: true,
+      allowHeaders: ['content-type'],
+      allowMethods: ['ANY'],
+      allowOrigins: ['http://localhost:3000', 'https://INSERT_PROD_URL']
+    },
     routes: {
       'GET /search/{cep}': 'packages/functions/src/search.handler',
 
@@ -34,4 +40,6 @@ export function API({ stack }: StackContext) {
   stack.addOutputs({
     ApiEndpoint: api.url
   })
+
+  return api
 }
