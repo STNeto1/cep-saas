@@ -1,6 +1,6 @@
 import { Show } from 'solid-js'
 import { redirect, useRouteData } from 'solid-start'
-import { createServerData$, json } from 'solid-start/server'
+import { createServerData$ } from 'solid-start/server'
 import { getToken } from '~/lib/cookie'
 
 type User = {
@@ -14,7 +14,6 @@ export function routeData() {
     const sessionToken = await getToken(request)
 
     if (!sessionToken) {
-      console.log('no session token')
       throw redirect('/login')
     }
 
