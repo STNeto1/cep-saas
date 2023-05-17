@@ -19,6 +19,8 @@ export const profileHandler = ApiHandler(async () => {
     body: JSON.stringify({
       id: user.userID,
       email: user.email,
+      name: user.name,
+      profilePicture: user.profilePicture,
       apiKey: user.apiKey
     })
   }

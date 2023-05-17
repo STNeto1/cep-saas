@@ -6,7 +6,6 @@ declare module 'sst/node/auth' {
   export interface SessionTypes {
     user: {
       userID: string
-      role: string
     }
   }
 }
@@ -21,15 +20,18 @@ export const handler = AuthHandler({
 
         let existingUser = await User.fromEmail(claims.email!)
         if (!existingUser) {
-          existingUser = await User.create(claims.email!)
+          existingUser = await User.create({
+            email: claims.email!,
+            name: claims.name,
+            profilePicture: claims.picture
+          })
         }
 
         return Session.parameter({
           redirect: Config.AUTH_REDIRECT_URL,
           type: 'user',
           properties: {
-            userID: existingUser?.userID,
-            role: existingUser?.role
+            userID: existingUser?.userID
           }
         })
       }

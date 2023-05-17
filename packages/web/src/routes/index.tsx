@@ -1,11 +1,14 @@
 import { Show } from 'solid-js'
 import { redirect, useRouteData } from 'solid-start'
 import { createServerData$ } from 'solid-start/server'
+import { Header } from '~/components/header$'
 import { getToken } from '~/lib/cookie'
 
-type User = {
+export type User = {
   id: string
+  name: string | null
   email: string
+  profilePicture: string | null
   apiKey: string
 }
 
@@ -36,12 +39,10 @@ export default function Home() {
   const data = useRouteData<typeof routeData>()
 
   return (
-    <main>
-      <Show when={data.loading}>loading...</Show>
-      <Show when={data.error}>error: {data.error.message}</Show>
-      <Show when={data()}>
-        <h1>{data()?.id}</h1>
-      </Show>
-    </main>
+    <>
+      <main>
+        <Header user={data()} />
+      </main>
+    </>
   )
 }

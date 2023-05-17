@@ -17,6 +17,16 @@ export const UserEntity = new Entity(
         required: true,
         readOnly: true
       },
+      name: {
+        type: 'string',
+        required: false,
+        readOnly: false
+      },
+      profilePicture: {
+        type: 'string',
+        required: false,
+        readOnly: false
+      },
       email: {
         type: 'string',
         required: true
@@ -107,9 +117,15 @@ export async function fromApiKey(apiKey: string) {
   return result.data.at(0)
 }
 
-export async function create(email: string) {
+export async function create(data: {
+  email: string
+  name?: string
+  profilePicture?: string
+}) {
   const result = await UserEntity.create({
-    email,
+    email: data.email,
+    name: data.name,
+    profilePicture: data.profilePicture,
     userID: ulid(),
     apiKey: ulid(),
     role: 'user'
