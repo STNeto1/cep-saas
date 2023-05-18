@@ -42,6 +42,28 @@ export default function Home() {
     <>
       <main>
         <Header user={data()} />
+
+        <section class="container  bg-muted w-1/2 p-4 rounded">
+          <h2 class="font-medium text-xl">Home</h2>
+
+          <section class="pt-4">
+            <h4 class="font-medium text-lg">Api Key</h4>
+            <Show when={data()?.apiKey} fallback={'Loading...'}>
+              <p class="text-sm">
+                Your API key is <code>{data()?.apiKey}</code>
+              </p>
+            </Show>
+          </section>
+
+          <section class="pt-4">
+            <h4 class="font-medium text-lg">Invoices</h4>
+            <Show when={data()?.apiKey} fallback={'Loading...'}>
+              <p class="text-sm">
+                Your API key is <code>{data()?.apiKey}</code>
+              </p>
+            </Show>
+          </section>
+        </section>
       </main>
     </>
   )
