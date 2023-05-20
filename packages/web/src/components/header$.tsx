@@ -1,20 +1,12 @@
-import { PopoverPanel, Transition } from 'solid-headless'
-import {
-  Component,
-  For,
-  Show,
-  createSignal,
-  createEffect,
-  createMemo
-} from 'solid-js'
+import { Component, For, Show, createMemo, createSignal } from 'solid-js'
 import { A, useLocation } from 'solid-start'
 
 import {
-  DropdownMenu,
-  DropdownMenuItem,
-  DropdownMenuPanel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenu$,
+  DropdownMenuContent$,
+  DropdownMenuItem$,
+  DropdownMenuSeparator$,
+  DropdownMenuTrigger$
 } from '~/components/menu$'
 import { SiteName } from '~/lib/config'
 import { cn } from '~/lib/utils'
@@ -27,14 +19,37 @@ type Props = {
 }
 
 export const Header: Component<Props> = (props) => {
+  const location = useLocation()
+
   return (
-    <header class="container z-40 bg-background">
-      <div class="flex h-20 items-center justify-between py-6">
+    <header class="bg-background z-40 px-6">
+      <div class="flex items-center justify-between pt-4">
         <MainNav />
         <Show when={props.user} fallback={'Loading...'}>
           {(usr) => <UserAccountNav {...usr()} />}
         </Show>
       </div>
+
+      <section class="flex flex-grow flex-shrink-0 items-center">
+        <div class="flex">
+          <For each={navItems}>
+            {(elem) => (
+              <A
+                href={elem.disabled ? '#' : elem.href}
+                class="relative inline-block px-4 py-3 outline-none cursor-pointer text-sm"
+                classList={{
+                  'text-primary border-b border-primary':
+                    location.pathname === elem.href,
+                  'text-muted-foreground': location.pathname !== elem.href,
+                  'opacity-50 cursor-not-allowed': elem.disabled
+                }}
+              >
+                {elem.title}
+              </A>
+            )}
+          </For>
+        </div>
+      </section>
     </header>
   )
 }
@@ -42,13 +57,13 @@ export const Header: Component<Props> = (props) => {
 const navItems = [
   {
     title: 'Dashboard',
-    href: '/'
+    href: '/',
+    disabled: false
   }
 ]
 
 const MainNav: Component = () => {
   const [showMobileMenu, setShowMobileMenu] = createSignal<boolean>(false)
-  const location = useLocation()
 
   const menuIcon = createMemo(() => {
     if (showMobileMenu()) {
@@ -59,39 +74,24 @@ const MainNav: Component = () => {
   })
 
   return (
-    <div class="flex gap-6 md:gap-10">
-      <A href="/" class="hidden items-center space-x-2 md:flex">
-        <span class="hidden font-bold sm:inline-block">{SiteName}</span>
-      </A>
-      <For each={navItems}>
-        {(item) => (
-          <nav class="hidden gap-6 md:flex">
-            <A
-              href={item.href}
-              class={cn(
-                'flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm',
-                location.pathname === item.href
-                  ? 'text-foreground'
-                  : 'text-foreground/60'
-              )}
-            >
-              {item.title}
-            </A>
-          </nav>
-        )}
-      </For>
-      <button
-        class="flex items-center space-x-2 md:hidden"
-        onClick={() => setShowMobileMenu((prev) => !prev)}
-      >
-        {menuIcon()}
-        <span class="font-bold">Menu</span>
-      </button>
+    <nav class="flex flex-col gap-4 items-center justify-start">
+      <div class="flex gap-6 md:gap-10">
+        <A href="/" class="hidden items-center space-x-2 md:flex">
+          <span class="hidden font-bold sm:inline-block">{SiteName}</span>
+        </A>
+        <button
+          class="flex items-center space-x-2 md:hidden"
+          onClick={() => setShowMobileMenu((prev) => !prev)}
+        >
+          {menuIcon()}
+          <span class="font-bold">Menu</span>
+        </button>
 
-      <Show when={showMobileMenu()}>
-        <MobileNav />
-      </Show>
-    </div>
+        <Show when={showMobileMenu()}>
+          <MobileNav />
+        </Show>
+      </div>
+    </nav>
   )
 }
 
@@ -150,54 +150,39 @@ const UserAvatar: Component<User> = (props) => (
 const UserAccountNav: Component<User> = (props) => {
   return (
     <div class="">
-      <DropdownMenu defaultOpen={false} class="relative">
-        {({ isOpen }) => (
-          <>
-            <DropdownMenuTrigger>
-              <UserAvatar {...props} />
-            </DropdownMenuTrigger>
+      <DropdownMenu$>
+        <DropdownMenuTrigger$>
+          <UserAvatar {...props} />
+        </DropdownMenuTrigger$>
 
-            <Transition
-              show={isOpen()}
-              enter="transition duration-200"
-              enterFrom="opacity-0 -translate-y-1 scale-50"
-              enterTo="opacity-100 translate-y-0 scale-100"
-              leave="transition duration-150"
-              leaveFrom="opacity-100 translate-y-0 scale-100"
-              leaveTo="opacity-0 -translate-y-1 scale-50"
-            >
-              <PopoverPanel
-                unmount={false}
-                class="absolute z-10 px-4 mt-3 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-3xl"
-              >
-                <DropdownMenuPanel>
-                  <div class="flex items-center justify-start gap-2 p-2">
-                    <div class="flex flex-col space-y-1 leading-none">
-                      {props.name && <p class="font-medium">{props.name}</p>}
-                      {props.email && (
-                        <p class="w-[200px] truncate text-sm text-muted-foreground">
-                          {props.email}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <DropdownMenuSeparator />
+        <DropdownMenuContent$>
+          <div class="flex items-center justify-start gap-2 p-2">
+            <div class="flex flex-col space-y-1 leading-none">
+              {props.name && <p class="font-medium">{props.name}</p>}
+              {props.email && (
+                <p class="w-[200px] truncate text-sm text-muted-foreground">
+                  {props.email}
+                </p>
+              )}
+            </div>
+          </div>
+          <DropdownMenuSeparator$ />
 
-                  <For each={navItems}>
-                    {(item) => (
-                      <DropdownMenuItem>
-                        <A href={item.href}>{item.title}</A>
-                      </DropdownMenuItem>
-                    )}
-                  </For>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>Sign Out</DropdownMenuItem>
-                </DropdownMenuPanel>
-              </PopoverPanel>
-            </Transition>
-          </>
-        )}
-      </DropdownMenu>
+          <For each={navItems}>
+            {(item) => (
+              <DropdownMenuItem$>
+                <A class="w-full h-full" href={item.href}>
+                  {item.title}
+                </A>
+              </DropdownMenuItem$>
+            )}
+          </For>
+          <DropdownMenuSeparator$ />
+          <DropdownMenuItem$>
+            <button class="w-full h-full text-left">Sign Out</button>
+          </DropdownMenuItem$>
+        </DropdownMenuContent$>
+      </DropdownMenu$>
     </div>
   )
 }

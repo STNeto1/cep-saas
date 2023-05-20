@@ -29,7 +29,7 @@ export default function Root() {
           type="font/ttf"
         />
       </Head>
-      <Body class="min-h-screen bg-background font-sans antialiased">
+      <Body class="min-h-screen bg-muted font-sans antialiased">
         <Suspense>
           <ErrorBoundary>
             <Routes>
