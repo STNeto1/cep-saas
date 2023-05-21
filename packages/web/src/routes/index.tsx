@@ -7,7 +7,7 @@ import {
 } from 'solid-start'
 import { createServerAction$, createServerData$ } from 'solid-start/server'
 import { Button$ } from '~/components/button$'
-import { Header } from '~/components/header$'
+import { Header$ } from '~/components/header$'
 import { CopyIcon, RefreshIcon } from '~/components/icons$'
 import { Input$ } from '~/components/input$'
 import {
@@ -16,6 +16,7 @@ import {
   TooltipProvider$,
   TooltipTrigger$
 } from '~/components/tooltip$'
+import { fetchUser } from '~/lib/api'
 import { getToken } from '~/lib/cookie'
 
 export type User = {
@@ -27,26 +28,7 @@ export type User = {
 }
 
 export function routeData() {
-  return createServerData$(async (_, { request }) => {
-    const sessionToken = await getToken(request)
-
-    if (!sessionToken) {
-      throw redirect('/login')
-    }
-
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/user`, {
-      headers: {
-        Authorization: `Bearer ${sessionToken}`
-      }
-    })
-
-    if (!response.ok) {
-      throw redirect('/login')
-    }
-
-    const data: User = await response.json()
-    return data
-  })
+  return createServerData$(async (_, { request }) => fetchUser(request))
 }
 
 export default function Home() {
@@ -98,7 +80,7 @@ export default function Home() {
   return (
     <>
       <main>
-        <Header user={data()} />
+        <Header$ user={data()} />
 
         <section class="container bg-background max-w-6xl rounded mt-12">
           <section class="py-4 flex flex-col gap-4">

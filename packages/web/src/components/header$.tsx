@@ -18,7 +18,7 @@ type Props = {
   user: User | undefined
 }
 
-export const Header: Component<Props> = (props) => {
+export const Header$: Component<Props> = (props) => {
   const location = useLocation()
 
   return (
@@ -31,7 +31,7 @@ export const Header: Component<Props> = (props) => {
       </div>
 
       <section class="flex flex-grow flex-shrink-0 items-center">
-        <div class="flex">
+        <div class="flex items-center gap-2">
           <For each={navItems}>
             {(elem) => (
               <A
@@ -58,6 +58,11 @@ const navItems = [
   {
     title: 'Dashboard',
     href: '/',
+    disabled: false
+  },
+  {
+    title: 'Billing',
+    href: '/billing',
     disabled: false
   }
 ]
