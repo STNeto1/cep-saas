@@ -17,7 +17,7 @@ export const useStaffId = () => {
     return null
   }
 
-  if (data.properties.role !== 'staff') {
+  if (data.properties.role === 'user') {
     return null
   }
 

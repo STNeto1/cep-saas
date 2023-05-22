@@ -6,6 +6,7 @@ declare module 'sst/node/auth' {
   export interface SessionTypes {
     user: {
       userID: string
+      role: User.Info['role']
     }
   }
 }
@@ -31,7 +32,8 @@ export const handler = AuthHandler({
           redirect: Config.AUTH_REDIRECT_URL,
           type: 'user',
           properties: {
-            userID: existingUser?.userID
+            userID: existingUser?.userID,
+            role: existingUser?.role
           }
         })
       }

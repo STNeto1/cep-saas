@@ -39,7 +39,10 @@ export function API({ stack }: StackContext) {
       'GET /search/{cep}': 'packages/functions/src/search.handler',
 
       'GET /user': 'packages/functions/src/user.profileHandler',
-      'POST /user/refresh': 'packages/functions/src/user.refreshHandler'
+      'POST /user/refresh': 'packages/functions/src/user.refreshHandler',
+
+      'GET /products': 'packages/functions/src/stripe.listHandler',
+      'POST /products': 'packages/functions/src/stripe.createHandler'
     }
   })
 
