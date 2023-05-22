@@ -1,6 +1,8 @@
 import { Entity, EntityItem } from 'electrodb'
 import { Dynamo } from './dynamo'
 import { ulid } from 'ulid'
+import Stripe from 'stripe'
+import { Config } from 'sst/node/config'
 
 export * as User from './user'
 
@@ -32,6 +34,10 @@ export const UserEntity = new Entity(
         required: true
       },
       apiKey: {
+        type: 'string',
+        required: true
+      },
+      stripeCustomerID: {
         type: 'string',
         required: true
       },
@@ -122,12 +128,21 @@ export async function create(data: {
   name?: string
   profilePicture?: string
 }) {
+  const stripe = new Stripe(Config.STRIPE_SECRET_KEY, {
+    apiVersion: '2022-11-15'
+  })
+
+  const customer = await stripe.customers.create({
+    email: data.email
+  })
+
   const result = await UserEntity.create({
     email: data.email,
     name: data.name,
     profilePicture: data.profilePicture,
     userID: ulid(),
     apiKey: ulid(),
+    stripeCustomerID: customer.id,
     role: 'user'
   }).go()
 

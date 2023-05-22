@@ -16,7 +16,7 @@ import {
   TooltipProvider$,
   TooltipTrigger$
 } from '~/components/tooltip$'
-import { fetchUser } from '~/lib/api'
+import { fetchUser } from '~/lib/api$'
 import { getToken } from '~/lib/cookie'
 
 export type User = {

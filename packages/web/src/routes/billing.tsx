@@ -1,7 +1,7 @@
 import { useRouteData } from 'solid-start'
 import { createServerData$ } from 'solid-start/server'
 import { Header$ } from '~/components/header$'
-import { fetchUser } from '~/lib/api'
+import { fetchUser } from '~/lib/api$'
 
 export function routeData() {
   return createServerData$(async (_, { request }) => fetchUser(request))

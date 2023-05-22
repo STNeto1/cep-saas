@@ -4,7 +4,12 @@ import { Secret } from './Secret'
 
 export function API({ stack }: StackContext) {
   const db = use(Database)
-  const { GOOGLE_CLIENT_ID, AUTH_REDIRECT_URL } = use(Secret)
+  const {
+    GOOGLE_CLIENT_ID,
+    AUTH_REDIRECT_URL,
+    STRIPE_SECRET_KEY,
+    STRIPE_PUBLISHABLE_KEY
+  } = use(Secret)
 
   const auth = new Auth(stack, 'auth', {
     authenticator: {
@@ -15,7 +20,13 @@ export function API({ stack }: StackContext) {
   const api = new Api(stack, 'api', {
     defaults: {
       function: {
-        bind: [db, GOOGLE_CLIENT_ID, AUTH_REDIRECT_URL]
+        bind: [
+          db,
+          GOOGLE_CLIENT_ID,
+          AUTH_REDIRECT_URL,
+          STRIPE_PUBLISHABLE_KEY,
+          STRIPE_SECRET_KEY
+        ]
       }
     },
     cors: {

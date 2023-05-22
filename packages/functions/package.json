@@ -13,6 +13,7 @@
     "vitest": "^0.31.0"
   },
   "dependencies": {
+    "stripe": "^12.6.0",
     "zod": "^3.21.4"
   }
 }

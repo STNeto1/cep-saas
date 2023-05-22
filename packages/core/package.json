@@ -14,6 +14,7 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.329.0",
     "electrodb": "^2.5.1",
-    "ulid": "^2.3.0"
+    "ulid": "^2.3.0",
+    "stripe": "^12.6.0"
   }
 }
