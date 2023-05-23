@@ -1,6 +1,7 @@
 import { SSTConfig } from 'sst'
 import { API } from './stacks/Api'
 import { Database } from './stacks/Database'
+import { QueueStack } from './stacks/Queue'
 import { Secret } from './stacks/Secret'
 import { Web } from './stacks/Web'
 
@@ -12,6 +13,6 @@ export default {
     }
   },
   stacks(app) {
-    app.stack(Secret).stack(Database).stack(API).stack(Web)
+    app.stack(Secret).stack(Database).stack(QueueStack).stack(API).stack(Web)
   }
 } satisfies SSTConfig

@@ -1,5 +1,6 @@
 import { Api, Auth, StackContext, use } from 'sst/constructs'
 import { Database } from './Database'
+import { QueueStack } from './Queue'
 import { Secret } from './Secret'
 
 export function API({ stack }: StackContext) {
@@ -10,6 +11,7 @@ export function API({ stack }: StackContext) {
     STRIPE_SECRET_KEY,
     STRIPE_PUBLISHABLE_KEY
   } = use(Secret)
+  const queue = use(QueueStack)
 
   const auth = new Auth(stack, 'auth', {
     authenticator: {
@@ -22,6 +24,7 @@ export function API({ stack }: StackContext) {
       function: {
         bind: [
           db,
+          queue,
           GOOGLE_CLIENT_ID,
           AUTH_REDIRECT_URL,
           STRIPE_PUBLISHABLE_KEY,
