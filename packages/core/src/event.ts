@@ -123,3 +123,90 @@ export const createFailureEvent = async (reason: string) => {
 
   return event.data
 }
+
+export const EventAggregate = new Entity(
+  {
+    model: {
+      version: '1',
+      entity: 'EventAggregate',
+      service: 'log'
+    },
+    attributes: {
+      userID: {
+        type: 'string',
+        required: false,
+        readOnly: true
+      },
+      count: {
+        type: 'number',
+        required: true,
+        readOnly: false
+      },
+      day: {
+        type: 'string',
+        required: true,
+        readOnly: true
+      },
+      month: {
+        type: 'string',
+        required: true,
+        readOnly: true
+      },
+      year: {
+        type: 'string',
+        required: true,
+        readOnly: true
+      }
+    },
+    indexes: {
+      primary: {
+        pk: {
+          field: 'pk',
+          composite: ['userID', 'year', 'month', 'day']
+        },
+        sk: {
+          field: 'sk',
+          composite: []
+        }
+      },
+      byUserID: {
+        index: 'gsi1',
+        pk: {
+          field: 'gsi1pk',
+          composite: ['userID']
+        },
+        sk: {
+          field: 'gsi1sk',
+          composite: []
+        }
+      }
+    }
+  },
+  Dynamo.Configuration
+)
+
+export type AggregateInfo = EntityItem<typeof EventAggregate>
+
+export const fromAggregate = async (userID: string) => {
+  const result = await EventAggregate.query.byUserID({ userID }).go()
+  return result.data
+}
+
+export const incrementAggregate = async (userID: string, date: Date) => {
+  const day = date.getDate().toString()
+  const month = (date.getMonth() + 1).toString()
+  const year = date.getFullYear().toString()
+
+  const event = await EventAggregate.update({
+    userID,
+    day,
+    month,
+    year
+  })
+    .add({
+      count: 1
+    })
+    .go()
+
+  return event.data
+}

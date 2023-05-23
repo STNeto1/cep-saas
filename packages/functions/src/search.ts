@@ -19,7 +19,8 @@ const sendFailureEvent = async (reason: string) => {
     MessageBody: JSON.stringify({
       type: 'failure',
       body: {
-        reason
+        reason,
+        timestamp: new Date()
       }
     })
   })
@@ -34,7 +35,8 @@ const sendSuccessEvent = async (cep: string, userID: string) => {
       type: 'success',
       body: {
         cep,
-        userID
+        userID,
+        timestamp: new Date()
       }
     })
   })

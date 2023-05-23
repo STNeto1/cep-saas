@@ -6,14 +6,16 @@ const successSchema = z.object({
   type: z.literal('success'),
   body: z.object({
     cep: z.string().length(8),
-    userID: z.string()
+    userID: z.string(),
+    timestamp: z.coerce.date()
   })
 })
 
 const failureSchema = z.object({
   type: z.literal('failure'),
   body: z.object({
-    reason: z.string()
+    reason: z.string(),
+    timestamp: z.coerce.date()
   })
 })
 
@@ -32,10 +34,12 @@ export const handler = (event: SQSEvent) => {
     const { type, body } = result.data
     if (type === 'success') {
       await Event.createSuccessEvent(body.userID, body.cep)
+      await Event.incrementAggregate(body.userID, body.timestamp)
     }
 
     if (type === 'failure') {
       await Event.createFailureEvent(body.reason)
+      // TODO: increment failure aggregate?
     }
   })
 
