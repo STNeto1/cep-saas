@@ -64,6 +64,11 @@ const navItems = [
     title: 'Billing',
     href: '/billing',
     disabled: false
+  },
+  {
+    title: 'Analytics',
+    href: '/analytics',
+    disabled: false
   }
 ]
 

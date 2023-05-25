@@ -114,7 +114,7 @@ export const createSuccessEvent = async (userID: string, cep: string) => {
   return event.data
 }
 
-export const createFailureEvent = async (reason: string) => {
+export const crateFailureEvent = async (reason: string) => {
   const event = await EventLog.put({
     eventType: 'failure',
     reason,
@@ -129,12 +129,12 @@ export const EventAggregate = new Entity(
     model: {
       version: '1',
       entity: 'EventAggregate',
-      service: 'log'
+      service: 'aggregate'
     },
     attributes: {
       userID: {
         type: 'string',
-        required: false,
+        required: true,
         readOnly: true
       },
       count: {
@@ -187,26 +187,47 @@ export const EventAggregate = new Entity(
 
 export type AggregateInfo = EntityItem<typeof EventAggregate>
 
-export const fromAggregate = async (userID: string) => {
-  const result = await EventAggregate.query.byUserID({ userID }).go()
-  return result.data
-}
-
 export const incrementAggregate = async (userID: string, date: Date) => {
   const day = date.getDate().toString()
   const month = (date.getMonth() + 1).toString()
   const year = date.getFullYear().toString()
 
-  const event = await EventAggregate.update({
+  const existing = await EventAggregate.get({
     userID,
     day,
     month,
     year
-  })
-    .add({
-      count: 1
+  }).go()
+
+  if (existing.data) {
+    const updatedEvent = await EventAggregate.put({
+      userID,
+      day,
+      month,
+      year,
+      count: existing.data.count + 1
+    }).go()
+
+    return updatedEvent.data
+  }
+
+  const event = await EventAggregate.put({
+    userID,
+    day,
+    month,
+    year,
+    count: 1
+  }).go()
+
+  return event.data
+}
+
+export const aggregateFromUser = async (userID: string) => {
+  const result = await EventAggregate.query
+    .byUserID({
+      userID
     })
     .go()
 
-  return event.data
+  return result.data
 }

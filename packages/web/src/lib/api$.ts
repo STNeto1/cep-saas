@@ -9,10 +9,6 @@ export const fetchUser = async (request: Request) => {
     throw redirect('/login')
   }
 
-  console.log({
-    sessionToken
-  })
-
   const response = await fetch(`${import.meta.env.VITE_API_URL}/user`, {
     headers: {
       Authorization: `Bearer ${sessionToken}`

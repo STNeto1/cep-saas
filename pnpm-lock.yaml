@@ -75,18 +75,27 @@ importers:
       '@kobalte/core':
         specifier: ^0.9.6
         version: 0.9.6(solid-js@1.7.2)
+      '@solid-primitives/refs':
+        specifier: ^1.0.4
+        version: 1.0.4(solid-js@1.7.2)
       '@solidjs/meta':
         specifier: ^0.28.2
         version: 0.28.2(solid-js@1.7.2)
       '@solidjs/router':
         specifier: ^0.8.2
         version: 0.8.2(solid-js@1.7.2)
+      chart.js:
+        specifier: ^4.3.0
+        version: 4.3.0
       class-variance-authority:
         specifier: ^0.6.0
         version: 0.6.0(typescript@4.9.4)
       clsx:
         specifier: ^1.2.1
         version: 1.2.1
+      solid-chartjs:
+        specifier: ^1.3.8
+        version: 1.3.8(@solid-primitives/refs@1.0.4)(chart.js@4.3.0)(solid-js@1.7.2)
       solid-icons:
         specifier: ^1.0.4
         version: 1.0.4(solid-js@1.7.2)
@@ -4119,6 +4128,10 @@ packages:
       solid-js: 1.7.2
     dev: false
 
+  /@kurkle/color@0.3.2:
+    resolution: {integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==}
+    dev: false
+
   /@nodelib/fs.scandir@2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -4489,6 +4502,10 @@ packages:
 
   /@types/resolve@1.20.2:
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
+    dev: false
+
+  /@types/uuid@8.3.4:
+    resolution: {integrity: sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==}
     dev: false
 
   /@types/ws@8.5.4:
@@ -5215,6 +5232,13 @@ packages:
   /charenc@0.0.2:
     resolution: {integrity: sha512-yrLQ/yVUFXkzg7EDQsPieE/53+0RlaWTs+wBrvW36cyilJ2SaDWfl4Yj7MtLTXleV9uEKefbAGUPv2/iWSooRA==}
     dev: true
+
+  /chart.js@4.3.0:
+    resolution: {integrity: sha512-ynG0E79xGfMaV2xAHdbhwiPLczxnNNnasrmPEXriXsPJGjmhOBYzFVEsB65w2qMDz+CaBJJuJD0inE/ab/h36g==}
+    engines: {pnpm: '>=7'}
+    dependencies:
+      '@kurkle/color': 0.3.2
+    dev: false
 
   /check-error@1.0.2:
     resolution: {integrity: sha512-BrgHpW9NURQgzoNyjfq0Wu6VFO6D7IZEmJNdtgNqpzGG8RuNFHt2jQxWlAs4HMe119chBnv+34syEZtc6IhLtA==}
@@ -6887,6 +6911,14 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /minifaker@1.34.1:
+    resolution: {integrity: sha512-O9+c6GaUETgtKe65bJkpDTJxGcAALiUPqJtDv97dT3o0uP2HmyUVEguEGm6PLKuoSzZUmHqSTZ4cS7m8xKFEAg==}
+    dependencies:
+      '@types/uuid': 8.3.4
+      nanoid: 3.3.6
+      uuid: 8.3.2
+    dev: false
+
   /minimalistic-assert@1.0.1:
     resolution: {integrity: sha512-UtJcAD4yEaGtjPezWuO9wC4nwUnVH/8/Im3yEHQP4b67cXlD/Qr9hdITCU1xDbSEXg2XKNaP8jsReV7vQd00/A==}
     dev: true
@@ -7868,6 +7900,19 @@ packages:
       ansi-styles: 6.2.1
       is-fullwidth-code-point: 4.0.0
     dev: true
+
+  /solid-chartjs@1.3.8(@solid-primitives/refs@1.0.4)(chart.js@4.3.0)(solid-js@1.7.2):
+    resolution: {integrity: sha512-cq85ZOTBAyXTbo1IQzViPzDM0go7Da/6SP6PEFno29Pdg8ubFQB5ctYbByZFLNfITlQO1TcP23Z40myKZehI6g==}
+    peerDependencies:
+      '@solid-primitives/refs': ^1.0.3
+      chart.js: ^4.3.0
+      solid-js: ^1.7.5
+    dependencies:
+      '@solid-primitives/refs': 1.0.4(solid-js@1.7.2)
+      chart.js: 4.3.0
+      minifaker: 1.34.1
+      solid-js: 1.7.2
+    dev: false
 
   /solid-icons@1.0.4(solid-js@1.7.2):
     resolution: {integrity: sha512-gJTp4in3+OYCs9WvDkSLt4Los2unR3Uoder8wjh15GsfP20xiNOLfPTJllXmn+fI8+k3x7bRYtLGIgWd9fUQug==}

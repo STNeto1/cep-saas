@@ -45,7 +45,9 @@ export function API({ stack }: StackContext) {
       'POST /user/refresh': 'packages/functions/src/user.refreshHandler',
 
       'GET /products': 'packages/functions/src/stripe.listHandler',
-      'POST /products': 'packages/functions/src/stripe.createHandler'
+      'POST /products': 'packages/functions/src/stripe.createHandler',
+
+      'GET /analytics/report': 'packages/functions/src/analytics.reportHandler'
     }
   })
 

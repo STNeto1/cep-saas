@@ -32,5 +32,9 @@ export function Database({ stack }: StackContext) {
     }
   })
 
+  stack.addOutputs({
+    TableName: table.tableName
+  })
+
   return table
 }

@@ -38,7 +38,7 @@ export const handler = (event: SQSEvent) => {
     }
 
     if (type === 'failure') {
-      await Event.createFailureEvent(body.reason)
+      // await Event.createFailureEvent(body.reason)
       // TODO: increment failure aggregate?
     }
   })
